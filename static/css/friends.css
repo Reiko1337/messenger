@@ -1,0 +1,74 @@
+.friends__search{
+    padding: 15px 10px;
+    background-color: #444446;
+    display: flex;
+    align-items: center;
+}
+.friends__search-input{
+    margin-left: 10px;
+    border: none;
+    outline: none;
+    background-color: #444446;
+    color: #fff;
+    width: 100%;
+}
+.friend__item{
+    padding: 10px;
+}
+.friend__item-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
+}
+.friend__image-container{
+    width: 80px;
+    height: 80px;
+    flex: 0 0 80px;
+}
+.friend__image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.friend__link-user{
+    font-weight: 700;
+    display: block;
+    text-decoration: none;
+    color: #fff;
+}
+.friend__info{
+    flex: 0 0 62%;
+}
+.friend__send-message{
+    font-weight: 400;
+    color: #999;
+    margin-top: 5px;
+}
+.friend__link-user:hover{
+    text-decoration: underline;
+}
+.friend__button{
+    transition: 0.3 s;
+    padding: 5px 10px;
+    background-color: #666666;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+}
+.friend__button:hover{
+    background-color: #5f5f5f;
+}
+.friends__global{
+    border-top: 25px solid #222226;
+}
+.friends__global-title{
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    padding: 20px 10px;
+    border-bottom: 1px solid #999;
+}

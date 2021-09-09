@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Регистрация
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block content %}
+    <p class="form__title">
+        Регистрация
+    </p>
+    <form class="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form__item">
+            <label class="form__image-container" for="{{ form.image.id_for_label }}">
+                <img src="{% static 'img/default_profile.jpeg' %}" class="form__image" id="preview">
+                {{ form.image }}
+                {{ form.image.errors }}
+            </label>
+        </div>
+        <div class="form__item">
+            <label for="login" class="form__label">Имя пользователя</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+        <div class="form__item">
+            <label for="login" class="form__label">Фамилия</label>
+            {{ form.last_name }}
+            {{ form.last_name.errors }}
+        </div>
+        <div class="form__item">
+            <label for="login" class="form__label">Имя</label>
+            {{ form.first_name }}
+            {{ form.first_name.errors }}
+        </div>
+        <div class="form__item">
+            <label for="password" class="form__label">Пароль</label>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </div>
+        <div class="form__item">
+            <label for="password" class="form__label">Повторить пароль</label>
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+        </div>
+        <div class="form__item">
+            <input type="submit" class="form__button" value="Зарегистрироваться">
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/preview.js' %}"></script>
+{% endblock %}

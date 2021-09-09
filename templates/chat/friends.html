@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load is_friend %}
+
+{% block title %}
+    Мои друзья
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/friends.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="friends">
+        <div class="friends__search">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0)">
+                    <path
+                            d="M13.8392 11.868C16.24 8.47788 15.4371 3.78356 12.047 1.38335C8.65684 -1.01686 3.96252 -0.214493 1.56231 3.1762C-0.837903 6.56632 -0.0355384 11.2601 3.35515 13.6603C5.77486 15.3734 8.974 15.5053 11.5262 13.9981L17.0716 19.5102C17.6704 20.1406 18.6666 20.1658 19.2969 19.567C19.9272 18.9688 19.9525 17.9726 19.3543 17.3423C19.3353 17.3222 19.317 17.3039 19.2969 17.285L13.8392 11.868ZM7.69618 12.3819C5.01723 12.3825 2.84529 10.2122 2.84357 7.53328C2.84299 4.85434 5.01322 2.68239 7.69274 2.68124C10.3682 2.6801 12.539 4.84688 12.5442 7.52239C12.5488 10.2019 10.3797 12.3773 7.69962 12.3819C7.69847 12.3819 7.6979 12.3819 7.69618 12.3819Z"
+                            fill="#999999"/>
+                </g>
+                <defs>
+                    <clipPath id="clip0">
+                        <rect width="20" height="20" fill="white"/>
+                    </clipPath>
+                </defs>
+            </svg>
+            <input type="text" class="friends__search-input" placeholder="Поиск друзей">
+        </div>
+        <div class="friends__list">
+            {% if friends %}
+                {% for friend in friends %}
+                    <div class="friend__item">
+                        <div class="friend__item-content">
+                            <div class="friend__image-container">
+                                <img src="{{ friend.image.url }}" class="friend__image">
+                            </div>
+                            <div class="friend__info">
+                                <a href="{% url 'profile-user' friend.pk %}" class="friend__link-user">
+                                    {{ friend.get_full_name }}
+                                </a>
+                                <a href="{% url 'create_user_chat' friend.pk %}"
+                                   class="friend__link-user friend__send-message">
+                                    Написать сообщение
+                                </a>
+                            </div>
+                            {% is_friend user friend %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="help-text">У вас нет друзей</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="friends__global-list">
+        {% if users %}
+            <div class="friends__global">
+                <p class="friends__global-title">
+                    Другие пользователи
+                </p>
+                {% for user_search in users %}
+                    <div class="friend__item">
+                        <div class="friend__item-content">
+                            <div class="friend__image-container">
+                                <img src="{{ user_search.image.url }}" alt="" class="friend__image">
+                            </div>
+                            <div class="friend__info">
+                                <a href="{% url 'profile-user' user_search.pk %}" class="friend__link-user">
+                                    {{ user_search.get_full_name }}
+                                </a>
+                                <a href="{% url 'create_user_chat' user_search.pk %}"
+                                   class="friend__link-user friend__send-message">
+                                    Написать сообщение
+                                </a>
+                            </div>
+                            {% is_friend user user_search %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/search_friends.js' %}"></script>
+{% endblock %}

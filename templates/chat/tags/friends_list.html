@@ -1,0 +1,24 @@
+{% load is_friend %}
+
+{% if friends %}
+    {% for friend in friends %}
+        <div class="friend__item">
+            <div class="friend__item-content">
+                <div class="friend__image-container">
+                    <img src="{{ friend.image.url }}" class="friend__image">
+                </div>
+                <div class="friend__info">
+                    <a href="#" class="friend__link-user">
+                        {{ friend.get_full_name }}
+                    </a>
+                    <a href="{% url 'create_user_chat' friend.pk %}" class="friend__link-user friend__send-message">
+                        Написать сообщение
+                    </a>
+                </div>
+                {% is_friend user friend %}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="help-text">У вас нет друзей</p>
+{% endif %}

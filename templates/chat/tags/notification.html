@@ -1,0 +1,24 @@
+<div class="notification__container">
+    <p class="notification__title">
+        Новое сообщение
+    </p>
+    <span class="notification__close">X</span>
+    <div class="notification__content">
+        <div class="notification__image-container">
+            <img src="{{ image }}" class="notification__image">
+        </div>
+        <div class="notification__info-container">
+            <a href="{{ url }}" class="notification__title">
+                {{ room_name }}
+            </a>
+            <div class="notification__msg-content">
+                <div class="notification__image-user">
+                    <img src="{{ image_user }}" class="notification__image">
+                </div>
+                <p class="notification__message">
+                    {{ message|truncatechars:80 }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

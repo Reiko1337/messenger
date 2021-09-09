@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Запросы в друзья
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/friends.css' %}">
+    <link rel="stylesheet" href="{% static 'css/friends_request.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="friends__global">
+        <p class="friends__global-title">
+            Заявки в друзья
+        </p>
+        {% if friends_request %}
+            {% for friend_request in friends_request %}
+                <div class="friend__item">
+                    <div class="friend__item-content">
+                        <div class="friend__image-container">
+                            <img src="{{ friend_request.image.url }}" alt="" class="friend__image">
+                        </div>
+                        <div class="friend__info">
+                            <a href="{% url 'profile-user' friend_request.pk %}" class="friend__link-user">
+                                {{ friend_request.get_full_name }}
+                            </a>
+                            <a href="{% url 'create_user_chat' user_search.pk %}" class="friend__link-user friend__send-message">
+                                Написать сообщение
+                            </a>
+                        </div>
+                        <a href="{% url 'friend-decision' 'accept' friend_request.pk %}" class="friend__button">Принять</a>
+                        <a href="{% url 'friend-decision' 'decline' friend_request.pk %}" class="friend__button">Отклонить</a>
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% else %}
+            <p class="help-text">У вас нет запросов в друзья</p>
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

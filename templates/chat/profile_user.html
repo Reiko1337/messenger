@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ profile_user.get_full_name }}
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="profile__content">
+        <p class="profile__title-username">
+            {{ profile_user.get_full_name }}
+        </p>
+
+        <div class="profile__info">
+            <label class="profile__image-container">
+                <img src="{{ profile_user.image.url }}" class="profile__image" id="preview">
+            </label>
+        </div>
+        <a href="{% url 'create_user_chat' profile_user.pk %}" class="profile__send-message">
+            Написать сообщение
+        </a>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/preview.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,20 @@
+<div class="dialog__container">
+    <div class="dialog__image-container">
+        <img src="{{ image }}" class="dialog__image">
+    </div>
+    <div class="dialog__message-container">
+        <p class="dialog__title">
+            {{ room_name }}
+        </p>
+        <div class="dialog__msg-content">
+
+            <div class="dialog__image-user">
+                <img src="{{ image_user }}"
+                     class="dialog__img-user">
+            </div>
+            <p class="dialog__message">
+                {{ message|truncatechars:120 }}
+            </p>
+        </div>
+    </div>
+</div>

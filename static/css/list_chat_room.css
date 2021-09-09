@@ -1,0 +1,102 @@
+.dialog__link{
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    color: #999;
+}
+
+.dialog__link:hover{
+    background-color: #444446;
+}
+
+.dialog__container{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
+}
+
+.dialog__image-container{
+    flex: 0 0 55px;
+    width: 55px;
+    height: 55px;
+}
+.dialog__image,
+.dialog__img-user{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.dialog__message-container{
+    flex: 0 0 90%;
+}
+.dialog__title{
+    color: #fff;
+    margin-bottom: 6px;
+}
+.dialog__message{
+    flex: 0 0 93%;
+    font-size: 13px;
+    line-height: 18px;
+}
+.dialog__msg-content{
+    display: flex;
+    justify-content: space-between;
+}
+.dialog__image-user{
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+}
+
+.dialog__notification{
+    border: 1px solid #fff;
+}
+.dialog__header{
+    position: fixed;
+    background-color: #444446;
+    width: 712.5px;
+    top: 59px;
+}
+.dialog__header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px 10px 10px;
+}
+.dialog__search-input{
+    border: none;
+    background-color: #444446;
+    padding: 5px;
+    outline: none;
+    color: #fff;
+    width: 100%;
+}
+.dialog__search-input-container{
+    flex: 0 0 95%;
+    position: relative;
+    padding-left: 25px;
+}
+.dialog__search-input-container:before{
+    position: absolute;
+    content: "";
+    width: 20px;
+    height: 20px;
+    top: 2px;
+    left: 0;
+    background-image: url("../img/pencil.svg");
+}
+.dialog__create-room{
+    flex: 0 0 23px;
+}
+.dialog__create-room:hover path{
+    fill: #fff;
+}
+.dialog__header-top{
+    background-color: #222226;
+    padding: 15px;
+}
+.dialog__content{
+    margin-top: 47px;
+}

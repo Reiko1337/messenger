@@ -1,0 +1,8 @@
+{% if status == 'friend' or status == 'friend_accep' %}
+    <a href="{% url 'friend-change' user_pk %}" class="friend__button">Удалить из друзей</a>
+{% elif status == 'request' or status == 'subscriber' %}
+    <a href="{% url 'friend-change' user_pk %}" class="friend__button">Отменить запрос</a>
+{% else %}
+    <a href="{% url 'friend-change' user_pk %}" class="friend__button">Добавить в друзья</a>
+{% endif %}
+

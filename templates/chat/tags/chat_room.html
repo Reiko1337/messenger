@@ -1,0 +1,35 @@
+{% load tags %}
+
+{% if rooms %}
+    {% for room in rooms %}
+        <a href="{{ room.get_absolute_url }}" class="dialog__link" id="{{ room.slug }}">
+            <div class="dialog__container">
+                <div class="dialog__image-container">
+                    <img src="{{ room|get_image_room:user.pk }}" class="dialog__image">
+                </div>
+                <div class="dialog__message-container">
+                    <p class="dialog__title">
+                        {{ room|get_title_room:user.pk }}
+                    </p>
+                    <div class="dialog__msg-content">
+                        {% if room.message.last %}
+                            <div class="dialog__image-user">
+                                <img src="{{ room.message.last.user.image.url }}"
+                                     class="dialog__img-user">
+                            </div>
+                            <p class="dialog__message">
+                                {{ room.message.last.message|truncatechars:120 }}
+                            </p>
+                        {% else %}
+                            <p class="dialog__message">
+                                Нет сообщений
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+{% else %}
+    <p class="help-text">Нет сообщений!</p>
+{% endif %}

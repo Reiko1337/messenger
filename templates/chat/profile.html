@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ user.get_full_name }}
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="profile__content">
+        <p class="profile__title-username">
+            {{ user.username }}
+        </p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="profile__info">
+                <label class="profile__image-container" for="{{ form.image.id_for_label }}">
+                    <img src="{{ user.image.url }}" class="profile__image" id="preview">
+                    <div class="profile__file">
+                        {{ form.image }}
+                    </div>
+                </label>
+                <div class="profile__info-user">
+                    <label class="profile__label">
+                        Фамилия:
+                        {{ form.last_name }}
+                    </label>
+                    <label class="profile__label">
+                        Имя:
+                        {{ form.first_name }}
+                    </label>
+                    <label class="profile__label">
+                        Кто мне может отправлять сообщения?
+                        {{ form.settings_message }}
+                    </label>
+                    <input type="submit" class="profile__button" value="Сохранить">
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script  src="{% static 'js/preview.js' %}"></script>
+{% endblock %}

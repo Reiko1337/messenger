@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tags %}
+
+{% block title %}
+    Мессенджер
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/list_chat_room.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="dialog__header">
+        <div class="dialog__header-top"></div>
+        <div class="dialog__header-container">
+            <div class="dialog__search-input-container">
+                <input type="text" class="dialog__search-input" placeholder="Поиск">
+            </div>
+            <a href="{% url 'room-create' %}" class="dialog__create-room-link">
+                <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"
+                     class="dialog__create-room">
+                    <path d="M19.5944 0.87167C19.5009 0.778143 19.3737 0.726166 19.2415 0.727567C19.1097 0.7285 18.9835 0.78001 18.8887 0.87167L11.771 7.98905L11.7512 8.00912L11.7413 8.01908C11.7315 8.03402 11.7165 8.04896 11.7066 8.06374C11.7066 8.06872 11.7016 8.06872 11.7016 8.0737C11.6916 8.08849 11.6865 8.0986 11.6767 8.11339C11.6716 8.11837 11.6716 8.1235 11.6667 8.12833C11.6617 8.14327 11.6569 8.15323 11.6518 8.16816C11.6518 8.17314 11.6468 8.17314 11.6468 8.17797L10.3793 12.0003C10.3186 12.1781 10.3648 12.3753 10.4988 12.5073C10.5926 12.5999 10.7195 12.6517 10.8514 12.6514C10.9054 12.6503 10.9591 12.642 11.0106 12.6265L14.823 11.3541C14.8278 11.3541 14.8278 11.3541 14.8328 11.3492C14.8485 11.3447 14.8638 11.338 14.8775 11.3294C14.8813 11.3288 14.8849 11.3271 14.8876 11.3243C14.9024 11.3145 14.9223 11.3045 14.9372 11.2944C14.952 11.2844 14.9669 11.2695 14.9819 11.2597C14.987 11.2549 14.9918 11.2549 14.9918 11.2497C14.9968 11.2447 15.0068 11.2398 15.0119 11.23L22.1341 4.10745C22.2273 4.01439 22.2796 3.88834 22.2796 3.757C22.2796 3.6255 22.2273 3.49929 22.1341 3.40654L19.5944 0.87167ZM12.3378 9.26154L13.7444 10.6682L11.6368 11.3689L12.3378 9.26154ZM14.6639 10.1811L12.8248 8.34215L19.2415 1.92536L21.0804 3.76431L14.6639 10.1811Z"
+                          fill="#999999"/>
+                    <path d="M18.4214 10.017C18.1472 10.0178 17.9251 10.2399 17.9243 10.5141V19.8038C17.922 20.6262 17.2559 21.2923 16.4332 21.2949H3.20233C2.37989 21.2923 1.71353 20.6262 1.71119 19.8038V6.57258C1.71353 5.75013 2.37989 5.08393 3.20233 5.08144H12.4917C12.7663 5.08144 12.9887 4.8589 12.9887 4.58439C12.9887 4.30988 12.7663 4.08734 12.4917 4.08734H3.20233C1.82993 4.08796 0.717725 5.20033 0.717102 6.57258V19.8038C0.717725 21.176 1.82993 22.2884 3.20233 22.2889H16.4332C17.8056 22.2884 18.918 21.176 18.9184 19.8038V10.5141C18.9176 10.2399 18.6956 10.0178 18.4214 10.017V10.017Z"
+                          fill="#999999"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="dialog__content">
+        {% if rooms %}
+            {% for room in rooms %}
+                <a href="{{ room.get_absolute_url }}" class="dialog__link" id="{{ room.slug }}">
+                    <div class="dialog__container">
+                        <div class="dialog__image-container">
+                            <img src="{{ room|get_image_room:user.pk }}" class="dialog__image">
+                        </div>
+                        <div class="dialog__message-container">
+                            <p class="dialog__title">
+                                 {{ room|get_title_room:user.pk }}
+                            </p>
+                            <div class="dialog__msg-content">
+                                {% if room.message.last %}
+                                    <div class="dialog__image-user">
+                                        <img src="{{ room.message.last.user.image.url }}"
+                                             class="dialog__img-user">
+                                    </div>
+                                    <p class="dialog__message">
+                                        {{ room.message.last.message|truncatechars:120 }}
+                                    </p>
+                                {% else %}
+                                    <p class="dialog__message">
+                                        Нет сообщений
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p class="help-text">Нет сообщений!</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/ws_notification_message.js' %}"></script>
+    <script src="{% static 'js/search_messages.js' %}"></script>
+{% endblock %}

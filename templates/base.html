@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/notification.css' %}">
+    {% block style %}
+
+    {% endblock %}
+    <title>{% block title %}Web Chat{% endblock %}</title>
+</head>
+
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="container">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="header__title">
+                    {{ user.get_full_name }}
+                </a>
+                <a href="{% url 'logout' %}" class="header__title">
+                    Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="header__title">
+                    Вход
+                </a>
+                <a href="{% url 'signup' %}" class="header__title">
+                    Регистрация
+                </a>
+            {% endif %}
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__container">
+                <nav class="navigation">
+                    <ul class="navigation__list">
+                        <li class="navigation__item">
+                            <a class="navigation__link" href="{% url 'profile' %}">Моя страница</a>
+                        </li>
+                        <li class="navigation__item">
+                            <a class="navigation__link" href="{% url 'friends' %}">Друзья</a>
+                        </li>
+                        <li class="navigation__item">
+                            <a class="navigation__link" href="{% url 'friends-request' %}">Заявки в друзья</a>
+                        </li>
+                        <li class="navigation__item">
+                            <a class="navigation__link" href="{% url 'messages' %}">Мессенджер</a>
+                        </li>
+                    </ul>
+                </nav>
+                <section class="main-content">
+                    {% block content %}
+
+                    {% endblock %}
+                </section>
+            </div>
+        </div>
+    </main>
+    <div class="notification">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="notification__container">
+                    <p class="notification__title">
+                        Ошибка
+                    </p>
+                    <span class="notification__close">X</span>
+                    <div class="notification__content">
+                        <div class="notification__image-container">
+                            <img src="{% static 'img/error.png' %}" class="notification__image">
+                        </div>
+                        <div class="notification__info-container">
+                            <p class="notification__title">
+                                {{ message }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% endif %}
+    </div>
+</div>
+<script src="{% static 'js/ws_notification.js' %}"></script>
+{% block scripts %}
+
+{% endblock %}
+</body>
+
+</html>

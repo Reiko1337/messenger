@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Создать беседу
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/add_user_chat_room.css' %}">
+    <link rel="stylesheet" href="{% static 'css/create_chat_room.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="add-user__header">
+        <p class="add-user__title">
+            Создать беседу
+        </p>
+        <a href="{% url 'messages' %}" class="add-user__close">
+            X
+        </a>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="create-chat-room__container">
+            <label class="create-chat-room__image-container" for="{{ form.image.id_for_label }}">
+                <img src="{% static 'img/default_room.jpg' %}" class="create-chat-room__image" id="preview">
+                {{ form.image }}
+            </label>
+            {{ form.title }}
+        </div>
+        <div class="add-user__items">
+            {% if friends %}
+                {% for friend in friends %}
+                    <label class="add-user__item" for="{{ friend.username }}">
+                        <div class="add-user__image-container">
+                            <img src="{{ friend.image.url }}" class="add-user__image">
+                        </div>
+                        <p class="add-user__username">
+                            {{ friend.get_full_name }}
+                        </p>
+                        <input type="checkbox" name="users" value="{{ friend.pk }}" id="{{ friend.username }}"
+                               class="add-user__checkbox">
+                    </label>
+                {% endfor %}
+            {% else %}
+                <p class="help-text">У вас нет друзей</p>
+            {% endif %}
+
+        </div>
+        <input type="submit" class="add-user__button" value="Создать беседу">
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/preview.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tags %}
+
+{% block title %}
+    {{ room|get_title_room:user.pk }}
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/chat_room.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="chat-room__header">
+        <div class="chat-room__header-top"></div>
+        <div class="chat-room__header-container">
+            <div class="chat-room__none"></div>
+            <div class="chat-room__info">
+                <a href="#popup" class="chat-room__title popup-link">
+                    {{ room|get_title_room:user.pk }}
+                </a>
+                {% if room.get_content_type == 'chatroom' %}
+                    <p class="chat-room__count">
+                        {{ room.get_count_user }} участник(а)
+                    </p>
+                {% endif %}
+            </div>
+            <div class="chat-room__image-container">
+                <img src="{{ room|get_image_room:user.pk }}" class="chat-room__image">
+            </div>
+        </div>
+    </div>
+    <div class="chat-room">
+        {% if messages_room %}
+            {% for message in messages_room %}
+                <div class="chat-room__message">
+                    <div class="chat-room__msg-image-container">
+                        <img src="{{ message.user.image.url }}" alt="" class="chat-room__image">
+                    </div>
+                    <div class="chat-room__message-content">
+                        <a href="" class="chat-room__msg-user">
+                            {{ message.user.get_full_name }}
+                        </a>
+                        <span class="chat-room__msg-time">
+                            {{ message.timestamp }}
+                        </span>
+                        <p class="chat-room__msg">
+                            {{ message.message }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="help-text">Нет сообщений!</p>
+        {% endif %}
+    </div>
+    {{ room.get_content_type|json_script:"content-type" }}
+    {{ room.slug|json_script:"room-slug" }}
+
+    {% if access %}
+        <div class="chat-room__send-msg">
+            <input type="text" class="chat-room__input" id="send-message__input" placeholder="Написать сообщение...">
+            <button id="send-message__button" class="chat-room__button">
+                <svg class="chat-room__button-svg" width="25" height="26" viewBox="0 0 25 26"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24.7375 11.6573C24.4806 11.1131 24.0523 10.6737 23.522 10.4102L3.76094 0.599129C2.45917 -0.0479577 0.892687 0.510272 0.26201 1.84591C-0.0592884 2.52643 -0.0862977 3.31438 0.187683 4.01637L3.6239 12.8287L0.187683 21.6419C-0.347541 23.0244 0.310913 24.5903 1.65836 25.1394C1.96303 25.2636 2.28771 25.3281 2.61555 25.3297C3.0122 25.3297 3.40373 25.2378 3.76094 25.0609L23.5219 15.2472C24.8238 14.6003 25.368 12.993 24.7375 11.6573ZM3.00054 23.4459C2.56655 23.6615 2.04442 23.4753 1.83433 23.03C1.72726 22.8031 1.71836 22.5405 1.80972 22.3065L5.15514 13.7244H22.5817L3.00054 23.4459ZM5.15519 11.9329L1.80977 3.35081C1.67053 3.00871 1.75698 2.61366 2.02539 2.36551C2.2852 2.10576 2.6775 2.04483 3.00054 2.21414L22.5817 11.9329H5.15519Z"
+                          fill="#999999"/>
+                </svg>
+            </button>
+        </div>
+    {% endif %}
+
+
+    {% if room.get_content_type == 'chatroom' %}
+        <div id="popup" class="popup">
+            <div class="popup__body">
+                <div class="popup__content">
+                    <a href="#" class="popup__close close-popup">
+                        X
+                    </a>
+                    <div class="popup__title-container">
+                        <p class="popup__title">
+                            Информация
+                        </p>
+                    </div>
+                    <div class="popup__info">
+                        <form action="{% url 'room_update' room.slug %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="chat-room__update">
+                                <label class="chat-room__update-image" for="{{ form.image.id_for_label }}">
+                                    <img src="{{ room.image.url }}" class="chat-room__image" id="preview">
+                                    {{ form.image }}
+                                </label>
+                                {{ form.title }}
+                                <button type="submit" class="chat-room__update-button">
+
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0)">
+                                            <path
+                                                    d="M12.3511 3.35919L1.3468 14.3643C1.29143 14.4198 1.25146 14.4899 1.23242 14.5653L0.0127046 19.4609C-0.0237807 19.6083 0.0195258 19.765 0.127078 19.8726C0.208456 19.954 0.31934 19.999 0.432761 19.999C0.467502 19.999 0.503035 19.9947 0.537617 19.986L5.43331 18.7661C5.50961 18.7471 5.57893 18.7073 5.63429 18.6519L16.6395 7.64764L12.3511 3.35919Z"
+                                                    fill="#999999"/>
+                                            <path
+                                                    d="M19.3658 1.8587L18.1408 0.633746C17.3221 -0.184952 15.8952 -0.184159 15.0775 0.633746L13.577 2.13424L17.8653 6.42253L19.3658 4.92204C19.7747 4.51324 20 3.96914 20 3.39045C20 2.81176 19.7747 2.26765 19.3658 1.8587Z"
+                                                    fill="#999999"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0">
+                                                <rect width="20" height="20" fill="white"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="chat-room__list-user">
+                            <div class="chat-room__user-item">
+                                <div class="chat-room__list-user-image">
+                                    <img src="{% static 'img/plus.svg' %}" class="chat-room__image">
+                                </div>
+                                <a href="{% url 'room_add_user' room.slug %}" class="chat-room__user-item-username chat-room__user-add">
+                                    Добавить участников
+                                </a>
+                                <a href="#" class="chat-room__list-user-kick">
+
+                                </a>
+                            </div>
+
+
+                            <div class="chat-room__user-item creator">
+                                <div class="chat-room__list-user-image">
+                                    <img src="{{ room.creator.image.url }}" class="chat-room__image">
+                                </div>
+                                <a href="{% url 'profile-user' room.creator.pk %}" class="chat-room__user-item-username">
+                                    {{ room.creator.get_full_name }}
+                                </a>
+                                <a href="#" class="chat-room__list-user-kick">
+                                    Администратор
+                                </a>
+                            </div>
+
+                            {% for room_user in room.get_users_without_creator %}
+                                <div class="chat-room__user-item">
+                                    <div class="chat-room__list-user-image">
+                                        <img src="{{ room_user.image.url }}" class="chat-room__image">
+                                    </div>
+                                    <a href="{% url 'profile-user' room_user.pk %}" class="chat-room__user-item-username">
+                                        {{ room_user.get_full_name }}
+                                    </a>
+                                    {% if user == room.creator %}
+                                        <a href="{% url 'room_exclude_user' room.slug room_user.pk %}" class="chat-room__list-user-kick">X</a>
+                                    {% else %}
+                                        <a href="" class="chat-room__list-user-kick"></a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="popup__footer-container">
+                        <a href="{% url 'room_leave_user' room.slug %}" class="popup__title-link">
+                            Выйти из беседы
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/popup.js' %}"></script>
+    <script src="{% static 'js/preview.js' %}"></script>
+    <script src="{% static 'js/ws_send_message.js' %}"></script>
+{% endblock %}
